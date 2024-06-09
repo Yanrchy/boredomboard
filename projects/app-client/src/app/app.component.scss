@@ -1,0 +1,29 @@
+
+div {
+
+    padding: 10px;
+    background-color: orange;
+    color: black;
+    font-weight: bold;
+
+}
+
+main {
+    
+    width:                  202vh;
+    height:                 97vh;
+    margin:                 8px 8px 8px 0px;
+
+    display:                grid;
+    grid-template-columns:  80% 20%;
+    grid-template-rows:     92% 8%;
+    row-gap:                8px;
+    column-gap:             8px;
+
+}
+
+.lobby {
+
+    grid-row: span 2;
+
+}
