@@ -1,6 +1,19 @@
 <div class="container">
 
-    <div>Hello</div>
+    <form [formGroup]="userForm" (ngSubmit)="Connect()">
 
-    
+        <label for="username">Username </label>
+        <input type="text" id="username" formControlName="username"/>
+
+        <br>
+
+        <label for="userColor">Color </label>
+        <input type="color" id="userColor" formControlName="userColor"/>
+
+        <br>
+
+        <button type="submit">Connect</button>
+
+    </form>
+
 </div>
