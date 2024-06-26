@@ -6,15 +6,11 @@ import { Router } from '@angular/router';
 import { UserProfileService } from '../user-profile.service';
 
 @Component({
-  
   selector: 'app-connection-prompt',
   standalone: true,
   imports: [ ReactiveFormsModule ],
   templateUrl: './connection-prompt.component.html',
   styleUrl: './connection-prompt.component.scss',
-
-  providers: [ UserProfileService ]
-
 })
 export class ConnectionPromptComponent {
 
