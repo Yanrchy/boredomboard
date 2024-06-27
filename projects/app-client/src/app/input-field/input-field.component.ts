@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { ChannelService } from '../channel.service';
+
 @Component({
   selector: 'app-input-field',
   standalone: true,
@@ -8,5 +10,13 @@ import { Component } from '@angular/core';
   styleUrl: './input-field.component.scss'
 })
 export class InputFieldComponent {
+
+  m_ChannelService!: ChannelService;
+
+  constructor(channelService: ChannelService) {
+
+    this.m_ChannelService = channelService;
+
+  }
 
 }
