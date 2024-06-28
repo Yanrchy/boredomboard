@@ -12,4 +12,11 @@ export class ChannelService {
     this.m_Messages = new Array<string>();
 
    }
+
+   Send(message: string): void {
+
+    this.m_Messages.push(message);
+
+   }
+
 }

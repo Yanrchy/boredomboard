@@ -11,11 +11,17 @@ import { ChannelService } from '../channel.service';
 })
 export class InputFieldComponent {
 
-  m_ChannelService!: ChannelService;
+  m_ChannelService: ChannelService;
 
   constructor(channelService: ChannelService) {
 
     this.m_ChannelService = channelService;
+
+  }
+
+  Send(message: string) {
+
+    this.m_ChannelService.Send(message);
 
   }
 

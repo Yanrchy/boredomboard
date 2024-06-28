@@ -1,12 +1,12 @@
 .channel {
     
     width:                  98vw;
-    height:                 97vh;
+    height:                 96vh;
     margin:                 8px;
 
     display:                grid;
     grid-template-columns:  80% 20%;
-    grid-template-rows:     92% 8%;
+    grid-template-rows:     90% 10%;
     row-gap:                8px;
     column-gap:             8px;
 
@@ -22,5 +22,7 @@ app-lobby {
 
     background-color: rgb(24, 24, 24);
     border-radius: 16px;
+
+    padding: 10px;
 
 }
