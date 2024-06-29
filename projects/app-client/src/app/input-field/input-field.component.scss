@@ -7,11 +7,12 @@
 .input {
 
     resize:             none;
+    overflow:           hidden;
 
     padding:            12px;
 
     width:              98%;
-    height:             88%;
+    height:             auto;
 
     font-size:          20px;
 
