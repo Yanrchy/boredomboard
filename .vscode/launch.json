@@ -3,6 +3,13 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "dlv debug Boredomboard",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/projects/boredomboard/cmd/boredomboard/."
+    },
+    {
       "name": "ng serve",
       "type": "chrome",
       "request": "launch",
