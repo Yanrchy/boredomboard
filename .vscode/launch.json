@@ -10,11 +10,10 @@
       "program": "${workspaceFolder}/projects/boredomboard/cmd/boredomboard/."
     },
     {
-      "name": "ng serve",
-      "type": "chrome",
-      "request": "launch",
-      "preLaunchTask": "npm: start",
-      "url": "http://localhost:4200/"
+      "name": "debug angular",
+      "type": "firefox",
+      "request": "attach",
+      "url": "http://localhost:4200/",
     },
     {
       "name": "ng test",
