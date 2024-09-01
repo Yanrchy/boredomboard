@@ -1,7 +1,16 @@
 package server
 
+type MessageType int
+
+const (
+	UserConnectMSG    MessageType = 0
+	UserDisconnectMSG MessageType = 1
+	TextMSG           MessageType = 2
+)
+
 type Message struct {
-	Sender string `json:"sender"`
-	Color  string `json:"color"`
-	Text   string `json:"text"`
+	Type   MessageType `json:"type"`
+	Sender string      `json:"sender"`
+	Color  string      `json:"color"`
+	Text   string      `json:"text"`
 }

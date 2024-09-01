@@ -16,6 +16,7 @@ type Client struct {
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
+	CheckOrigin:     OnCheckOrigin,
 }
 
 func (client *Client) ReadChannel() {
@@ -41,10 +42,12 @@ func (client *Client) WriteChannel() {
 
 		client.Connection.ReadJSON(&message)
 
-		if message.Sender != "" {
+		switch message.Type {
+
+		case TextMSG:
 
 			client.Channel.Send <- message
-			message.Sender = ""
+			message = Message{}
 
 		}
 
@@ -73,5 +76,11 @@ func OnClientConnection(channel *CommChannel, writer http.ResponseWriter, reques
 	go client.ReadChannel()
 
 	log.Printf("client connected")
+
+}
+
+func OnCheckOrigin(request *http.Request) bool {
+
+	return true
 
 }
