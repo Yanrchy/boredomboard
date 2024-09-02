@@ -25,13 +25,27 @@ export class ChannelService {
 
    OnMessageReceived<T>(message: T | any): void {
 
-    this.m_Messages.push(new Message(message.sender, message.color, message.text));
+    switch (message.type) {
+
+      case MessageType.TextMSG:
+        this.m_Messages.push(new Message(message.sender, message.color, message.text));
+        break;
+
+    }
+
     
   }
 
    Send(text: string): void {
 
-    this.m_Messages.push(new Message(this.m_ProfileService.m_Username, this.m_ProfileService.m_Color, text));
+    let message = {
+      type:     MessageType.TextMSG,
+      sender:   this.m_ProfileService.m_Username,
+      color:    this.m_ProfileService.m_Color,
+      text:     text
+    }
+
+    this.m_Socket.next(message);
 
    }
 
@@ -56,5 +70,13 @@ class Message {
     this.m_Text = text;
 
   }
+
+}
+
+enum MessageType {
+
+  UserConnectMSG    = 0,
+  UserDisconnectMSG = 1,
+  TextMSG           = 2
 
 }
