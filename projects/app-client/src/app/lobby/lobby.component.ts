@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ChannelService } from '../channel.service';
 
 @Component({
   selector: 'app-lobby',
@@ -8,5 +9,13 @@ import { Component } from '@angular/core';
   styleUrl: './lobby.component.scss'
 })
 export class LobbyComponent {
+
+  m_ChannelService: ChannelService;
+
+  constructor(channelService: ChannelService) {
+
+    this.m_ChannelService = channelService;
+
+  }
 
 }

@@ -44,6 +44,10 @@ func (client *Client) WriteChannel() {
 
 		switch message.Type {
 
+		case UserConnectMSG:
+			client.Channel.BroadcastNewUser <- message
+			message = Message{}
+
 		case TextMSG:
 
 			client.Channel.Send <- message

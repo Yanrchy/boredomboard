@@ -1,4 +1,7 @@
 <div class="lobby">
 
+    @for (entry of m_ChannelService.m_Lobby; track $index) {
+        <div [style.color]="entry.m_Color">{{entry.m_User}}</div>
+    }
 
 </div>
