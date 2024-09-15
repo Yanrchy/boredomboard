@@ -3,8 +3,14 @@ package server
 import (
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/websocket"
+)
+
+const (
+	PongTimeout  = 30 * time.Second
+	PingInterval = 20 * time.Second
 )
 
 type Client struct {
@@ -40,7 +46,15 @@ func (client *Client) WriteChannel() {
 
 	for {
 
-		client.Connection.ReadJSON(&message)
+		err := client.Connection.ReadJSON(&message)
+		if err != nil {
+
+			if websocket.IsUnexpectedCloseError(err, websocket.CloseAbnormalClosure) {
+				log.Printf("error: %v \n", err)
+			}
+
+			break
+		}
 
 		switch message.Type {
 
