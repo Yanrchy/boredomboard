@@ -9,6 +9,7 @@ import (
 )
 
 const (
+	Timeout      = 30 * time.Second
 	PongTimeout  = 30 * time.Second
 	PingInterval = 20 * time.Second
 )
@@ -17,6 +18,7 @@ type Client struct {
 	Channel    *CommChannel
 	Connection *websocket.Conn
 	Send       chan Message
+	Control    chan int
 }
 
 var upgrader = websocket.Upgrader{
@@ -34,6 +36,9 @@ func (client *Client) ReadChannel() {
 		case message := <-client.Send:
 			client.Connection.WriteJSON(message)
 
+		case message := <-client.Control:
+			client.Connection.WriteControl(message, nil, time.Now().Add(Timeout))
+
 		}
 
 	}
@@ -42,8 +47,21 @@ func (client *Client) ReadChannel() {
 
 func (client *Client) WriteChannel() {
 
-	var message Message
+	/*************************************************************************************
+	 * Sets the cleint's pong handler, failure to meet the set deadline results in       *
+	 * error in subsequent reads in the message loop, the loop should handle how to deal *
+	 * with that.                                                                        *
+	 *************************************************************************************/
+	client.Connection.SetReadDeadline(time.Now().Add(PongTimeout))
+	client.Connection.SetPongHandler(func(appData string) error {
 
+		log.Printf("pong msg received\n")
+		err := client.Connection.SetReadDeadline(time.Now().Add(PongTimeout))
+
+		return err
+	})
+
+	var message Message
 	for {
 
 		err := client.Connection.ReadJSON(&message)
@@ -86,6 +104,7 @@ func OnClientConnection(channel *CommChannel, writer http.ResponseWriter, reques
 		Channel:    channel,
 		Connection: conn,
 		Send:       make(chan Message),
+		Control:    make(chan int),
 	}
 
 	channel.Register <- &client

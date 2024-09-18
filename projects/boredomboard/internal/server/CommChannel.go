@@ -1,6 +1,11 @@
 package server
 
-import "log"
+import (
+	"log"
+	"time"
+
+	"github.com/gorilla/websocket"
+)
 
 type CommChannel struct {
 	Transcript []Message
@@ -29,6 +34,20 @@ func NewChannel() *CommChannel {
 }
 
 func (channel *CommChannel) Serve() {
+
+	/*********** Ticker for when to ping the client ***********/
+	/**********************************************************/
+	ticker := time.NewTicker(PingInterval)
+	defer ticker.Stop()
+
+	tickChannel := make(chan time.Time)
+
+	go func() {
+		for tick := range ticker.C {
+			tickChannel <- tick
+		}
+	}()
+	/**********************************************************/
 
 	for {
 
@@ -66,6 +85,14 @@ func (channel *CommChannel) Serve() {
 				client.Send <- message
 
 			}
+
+		case <-tickChannel:
+			for client := range channel.Lobby {
+
+				client.Control <- websocket.PingMessage
+
+			}
+
 		}
 
 	}
