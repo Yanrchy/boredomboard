@@ -19,6 +19,9 @@ type Client struct {
 	Connection *websocket.Conn
 	Send       chan Message
 	Control    chan int
+
+	Username string
+	Color    string
 }
 
 var upgrader = websocket.Upgrader{
@@ -77,6 +80,9 @@ func (client *Client) WriteChannel() {
 		switch message.Type {
 
 		case UserConnectMSG:
+			client.Username = message.Sender
+			client.Color = message.Color
+
 			client.Channel.BroadcastNewUser <- message
 			message = Message{}
 

@@ -9,7 +9,6 @@ import (
 
 type CommChannel struct {
 	Transcript []Message
-	InLobby    []Message
 	Lobby      map[*Client]bool
 
 	Register   chan *Client
@@ -23,7 +22,6 @@ func NewChannel() *CommChannel {
 
 	return &CommChannel{
 		Transcript:       make([]Message, 0, 1024),
-		InLobby:          make([]Message, 0, 1024),
 		Lobby:            make(map[*Client]bool),
 		Register:         make(chan *Client),
 		Unregister:       make(chan *Client),
@@ -60,8 +58,13 @@ func (channel *CommChannel) Serve() {
 				client.Send <- channel.Transcript[i]
 			}
 
-			for i := 0; i < len(channel.InLobby); i++ {
-				client.Send <- channel.InLobby[i]
+			for clientConnected := range channel.Lobby {
+				client.Send <- Message{
+					Type:   UserConnectMSG,
+					Sender: clientConnected.Username,
+					Color:  clientConnected.Color,
+					Text:   "",
+				}
 			}
 
 			//case client := <-channel.Unregister:
@@ -78,7 +81,6 @@ func (channel *CommChannel) Serve() {
 			log.Printf("%v: %v", message.Sender, message.Text)
 
 		case message := <-channel.BroadcastNewUser:
-			channel.InLobby = append(channel.InLobby, message)
 
 			for client := range channel.Lobby {
 
