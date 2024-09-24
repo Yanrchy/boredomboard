@@ -67,7 +67,18 @@ func (channel *CommChannel) Serve() {
 				}
 			}
 
-			//case client := <-channel.Unregister:
+		case client := <-channel.Unregister:
+			for connectedClient := range channel.Lobby {
+				connectedClient.Send <- Message{
+					Type:   UserDisconnectMSG,
+					Sender: client.Username,
+					Color:  client.Color,
+					Text:   "",
+				}
+			}
+
+			client.Disconnect <- client
+			delete(channel.Lobby, client)
 
 		case message := <-channel.Send:
 			channel.Transcript = append(channel.Transcript, message)

@@ -19,6 +19,7 @@ type Client struct {
 	Connection *websocket.Conn
 	Send       chan Message
 	Control    chan int
+	Disconnect chan *Client
 
 	Username string
 	Color    string
@@ -32,8 +33,9 @@ var upgrader = websocket.Upgrader{
 
 func (client *Client) ReadChannel() {
 
-	for {
+	defer client.Connection.Close()
 
+	for {
 		select {
 
 		case message := <-client.Send:
@@ -42,13 +44,17 @@ func (client *Client) ReadChannel() {
 		case message := <-client.Control:
 			client.Connection.WriteControl(message, nil, time.Now().Add(Timeout))
 
-		}
+		case <-client.Disconnect:
+			return
 
+		}
 	}
 
 }
 
 func (client *Client) WriteChannel() {
+
+	defer client.Connection.Close()
 
 	/*************************************************************************************
 	 * Sets the cleint's pong handler, failure to meet the set deadline results in       *
@@ -72,9 +78,11 @@ func (client *Client) WriteChannel() {
 
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseAbnormalClosure) {
 				log.Printf("error: %v \n", err)
+				log.Printf("terminating connection %v", client.Username)
+				client.Channel.Unregister <- client
 			}
 
-			break
+			return
 		}
 
 		switch message.Type {
@@ -111,6 +119,7 @@ func OnClientConnection(channel *CommChannel, writer http.ResponseWriter, reques
 		Connection: conn,
 		Send:       make(chan Message),
 		Control:    make(chan int),
+		Disconnect: make(chan *Client),
 	}
 
 	channel.Register <- &client

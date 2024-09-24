@@ -33,6 +33,10 @@ export class ChannelService {
         this.m_Lobby.push(new LobbyEntry(message.sender, message.color));
         break;
 
+      case MessageType.UserDisconnectMSG:
+        this.m_Lobby.splice(this.m_Lobby.findIndex(target => target.m_User === message.sender), 1);
+        break;
+
       case MessageType.TextMSG:
         this.m_Messages.push(new Message(message.sender, message.color, message.text));
         break;
