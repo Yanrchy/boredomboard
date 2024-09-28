@@ -35,7 +35,7 @@ func (app *Application) Initialize() {
 
 func (app *Application) Serve() {
 
-	log.Printf("listening... (%v)\n", app.Server.Addr)
+	log.Printf("server: listening at port '%v'\n", app.Server.Addr)
 
 	log.Fatal(http.ListenAndServe(app.Server.Addr, app.Server.Handler))
 

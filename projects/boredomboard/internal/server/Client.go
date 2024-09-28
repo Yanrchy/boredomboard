@@ -64,7 +64,8 @@ func (client *Client) WriteChannel() {
 	client.Connection.SetReadDeadline(time.Now().Add(PongTimeout))
 	client.Connection.SetPongHandler(func(appData string) error {
 
-		log.Printf("pong msg received\n")
+		// uncomment this for testing
+		// log.Printf("server: pong msg received from %v\n", client.Username)
 		err := client.Connection.SetReadDeadline(time.Now().Add(PongTimeout))
 
 		return err
@@ -76,12 +77,12 @@ func (client *Client) WriteChannel() {
 		err := client.Connection.ReadJSON(&message)
 		if err != nil {
 
-			if websocket.IsUnexpectedCloseError(err, websocket.CloseAbnormalClosure) {
-				log.Printf("error: %v \n", err)
-				log.Printf("terminating connection %v", client.Username)
-				client.Channel.Unregister <- client
-			}
+			//if websocket.IsUnexpectedCloseError(err, websocket.CloseAbnormalClosure) {
+			//}
 
+			log.Printf("server: %v\n", err)
+			log.Printf("server: terminating connection with %v\n", client.Username)
+			client.Channel.Unregister <- client
 			return
 		}
 
@@ -110,7 +111,7 @@ func OnClientConnection(channel *CommChannel, writer http.ResponseWriter, reques
 	conn, err := upgrader.Upgrade(writer, request, nil)
 
 	if err != nil {
-		log.Printf("client failed to connect | %v\n", err)
+		log.Printf("server: client failed to connect, %v\n", err)
 		return
 	}
 
@@ -127,7 +128,7 @@ func OnClientConnection(channel *CommChannel, writer http.ResponseWriter, reques
 	go client.WriteChannel()
 	go client.ReadChannel()
 
-	log.Printf("client connected")
+	log.Printf("server: new client connected\n")
 
 }
 
