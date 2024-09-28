@@ -1,19 +1,23 @@
-<div class="container">
+<div class="viewport">
+    <div class="container">
 
-    <form [formGroup]="m_UserForm" (ngSubmit)="Connect()">
-
-        <label for="username">Username </label>
-        <input type="text" id="username" formControlName="username"/>
-
-        <br>
-
-        <label for="userColor">Color </label>
-        <input type="color" id="userColor" formControlName="userColor"/>
-
-        <br>
-
-        <button type="submit">Connect</button>
-
-    </form>
-
+        <div class="content">
+            <form [formGroup]="m_UserForm" (ngSubmit)="Connect()">
+                
+                <label for="username">Username </label>
+                <input type="text" id="username" formControlName="username" class="textInput" maxlength="16" />
+                
+                <br><br>
+                
+                <label for="userColor">Color </label>
+                <input type="color" id="userColor" formControlName="userColor" class="colorInput"/>
+                
+                <br><br>
+                
+                <button type="submit">Connect</button>
+                
+            </form>
+        </div>
+            
+    </div>
 </div>
