@@ -3,10 +3,10 @@
     height: 100%;
     color: white;
 
-}
-
-.entry {
-
     display: flex;
+    flex: auto;
+    flex-direction: column;
+
+    overflow: auto;
 
 }

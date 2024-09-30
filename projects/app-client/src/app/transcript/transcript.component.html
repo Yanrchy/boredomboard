@@ -1,7 +1,7 @@
 <div class="transcript">
 
     @for (Message of m_ChannelService.m_Messages; track $index) {
-        <div class="entry"><div [style.color]="Message.m_Color">{{Message.m_Sender}}</div>: {{Message.m_Text}}</div>
+        <div><span [style.color]="Message.m_Color">{{Message.m_Sender}}</span>: {{Message.m_Text}}</div>
     }
 
 </div>
