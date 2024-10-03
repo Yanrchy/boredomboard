@@ -1,3 +1,9 @@
+/*
+ * This service represents the chat state on the client side.
+ * It's responsible for interactions with the server app.
+ * Refer to Message.go on how WebScoket messages are formatted
+ */
+
 import { Injectable } from '@angular/core';
 import { UserProfileService } from './user-profile.service';
 

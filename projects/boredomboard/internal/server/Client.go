@@ -14,6 +14,21 @@ const (
 	PingInterval = 20 * time.Second
 )
 
+/*
+ * Client is the representation of the "client" on the server side
+ * It has two main methods for interacting with the CommChannel.
+ *
+ * func (client *Client) ReadChannel();
+ * 	Means the client is reading the chat state on the server side.
+ * 	If the client is to receive messages, it's through this method.
+ *
+ * func (client *Client) WriteChannel();
+ * 	Means the client is writing to the chat state on the server side.
+ *
+ * The messages that are sent and received by the client can have different meanings,
+ * use MessageType enums to evaluate said messages.
+ */
+
 type Client struct {
 	Channel    *CommChannel
 	Connection *websocket.Conn
@@ -73,6 +88,16 @@ func (client *Client) WriteChannel() {
 
 	var message Message
 	for {
+
+		/*
+		 * When ReadJSON throws an error, the CommChannel should disconnect the client.
+		 *	If the client fails to respond to control frames, it will throw an error.
+		 *
+		 *	The function will also throw an error if the client sends a disconnect control frame,
+		 *	this is the default close handler of gorilla websocket, all subsequent reads will throw
+		 *	an error if we receive a conntrol frame for disconnection from the client. When that happens
+		 *	CommChannel should disconnect the client.
+		 */
 
 		err := client.Connection.ReadJSON(&message)
 		if err != nil {

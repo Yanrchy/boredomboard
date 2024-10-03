@@ -7,6 +7,15 @@ import (
 	"github.com/gorilla/websocket"
 )
 
+/*
+ * CommChannel represents the actual state of the chat application.
+ * It's reponsible for keeping track of the message Transcript
+ * and all the clients connected to the lobby.
+ *
+ * Clients may read and write to it, since this is the true state of the chat,
+ * the channel should send a signal to the connected client's frontend app to
+ * update the state on client side.
+ */
 type CommChannel struct {
 	Transcript []Message
 	Lobby      map[*Client]bool
