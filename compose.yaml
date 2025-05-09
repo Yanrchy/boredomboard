@@ -1,0 +1,21 @@
+name: "boredomboard"
+
+services:
+
+  app-client:
+    container_name: boredomboard-client
+
+    build:
+      dockerfile: app-client.Dockerfile
+
+    ports:
+      - "127.0.0.1:4200:4200"
+
+  app-server:
+    container_name: boredomboard
+
+    build:
+      dockerfile: app-server.Dockerfile
+
+    ports:
+      - "127.0.0.1:8000:8000"

@@ -14,3 +14,9 @@ projects/
 
     boredomboard/   # server app
 ```
+
+## Running the app
+
+```txt
+> docker compose up
+```
